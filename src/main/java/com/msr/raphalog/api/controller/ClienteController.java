@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.msr.raphalog.domain.model.Cliente;
 import com.msr.raphalog.domain.repository.ClienteRepository;
+import com.msr.raphalog.domain.service.ClienteService;
 
 import lombok.AllArgsConstructor;
 
@@ -27,7 +28,9 @@ import lombok.AllArgsConstructor;
 public class ClienteController {
 
 	private ClienteRepository clienteRepository;
-
+	private ClienteService clienteService;
+	
+	
 	@GetMapping
 	public List<Cliente> listarClientes() {
 		return clienteRepository.findAll();
@@ -54,7 +57,7 @@ public class ClienteController {
 	
 	@PostMapping @ResponseStatus(HttpStatus.CREATED)
 	public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-		return clienteRepository.save(cliente);
+		return clienteService.salvar(cliente);
 	}
 	
 	@PutMapping("/{id}")
@@ -63,7 +66,7 @@ public class ClienteController {
 			return ResponseEntity.notFound().build();
 		}
 		cliente.setId(id); // Força a atualização, para que não se crie um novo objeto
-		cliente = clienteRepository.save(cliente);
+		cliente = clienteService.salvar(cliente);
 		return ResponseEntity.ok(cliente);
 	}
 	
@@ -72,7 +75,7 @@ public class ClienteController {
 		if (!clienteRepository.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
-		clienteRepository.deleteById(id);
+		clienteService.excluir(id);
 		return ResponseEntity.noContent().build();
 	}
 	
