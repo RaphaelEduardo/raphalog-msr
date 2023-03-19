@@ -7,7 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.msr.raphalog.domain.ValidationGroups;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -20,18 +23,23 @@ import lombok.Setter;
 @Entity
 public class Cliente {
 
-	@EqualsAndHashCode.Include
+	@NotNull(groups = ValidationGroups.ClienteId.class)
+	@EqualsAndHashCode.Include 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotBlank @Size(max=60)
+	@NotBlank 
+	@Size(max=60)
 	private String nome;
 	
-	@NotBlank @Email @Size(max=255)
+	@NotBlank 
+	@Email 
+	@Size(max=255)
 	private String email;
 	
-	@NotBlank @Size(max=20) @Column(name="fone")
+	@NotBlank 
+	@Size(max=20) 
+	@Column(name="fone")
 	private String telefone;
-	
 	
 }
